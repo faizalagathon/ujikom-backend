@@ -32,18 +32,16 @@ class AlbumStoreRequest extends FormRequest
         return [
             'required' => 'Harap Mengisi :attribute',
             'string' => 'Harap Inputkan Kata',
-            'user_id.exists' => 'Username Tidak Ada',
+            'user_id.exists' => 'User Tidak Ada',
             'date' => 'Harap Inputkan Tanggal',
         ];
     }
     public function attributes(): array
     {
         return [
-            'username' => 'Username',
-            'password' => 'Password',
-            'email' => 'Email',
-            'nama_lengkap' => 'Nama Lengkap',
-            'alamat' => 'Alamat',
+            'nama' => 'Nama',
+            'deskripsi' => 'Deskripsi',
+            'tanggal' => 'Tanggal',
         ];
     }
 }
