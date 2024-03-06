@@ -23,7 +23,6 @@ class FotoStoreRequest extends FormRequest
             'judul' => ['required', 'string'],
             'deskripsi' => ['required', 'string'],
             'tanggal' => ['required', 'date'],
-            'file' => ['required', 'string'],
             'album_id' => ['required', 'integer', 'exists:albums,id'],
             'user_id' => ['required', 'integer', 'exists:users,id'],
         ];

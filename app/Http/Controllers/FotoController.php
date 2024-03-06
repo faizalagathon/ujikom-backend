@@ -43,7 +43,7 @@ class FotoController extends Controller
     {
         $foto = Foto::create($request->validated());
 
-        Storage::put('public/foto/', $request->foto);
+        Storage::put('public/foto/', $request->foto->name);
 
         return new FotoResource($foto);
     }
