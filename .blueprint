@@ -1,0 +1,43 @@
+created:
+    - app/Http/Controllers/AlbumController.php
+    - app/Http/Controllers/FotoController.php
+    - app/Http/Controllers/KomentarController.php
+    - app/Http/Controllers/LikeController.php
+    - database/factories/UserFactory.php
+    - database/factories/AlbumFactory.php
+    - database/factories/FotoFactory.php
+    - database/factories/KomentarFactory.php
+    - database/factories/LikeFactory.php
+    - database/migrations/2024_03_06_035535_create_users_table.php
+    - database/migrations/2024_03_06_035536_create_albums_table.php
+    - database/migrations/2024_03_06_035537_create_fotos_table.php
+    - database/migrations/2024_03_06_035538_create_komentars_table.php
+    - database/migrations/2024_03_06_035539_create_likes_table.php
+    - app/Models/User.php
+    - app/Models/Album.php
+    - app/Models/Foto.php
+    - app/Models/Komentar.php
+    - app/Models/Like.php
+    - tests/Feature/Http/Controllers/AlbumControllerTest.php
+    - tests/Feature/Http/Controllers/FotoControllerTest.php
+    - tests/Feature/Http/Controllers/KomentarControllerTest.php
+    - tests/Feature/Http/Controllers/LikeControllerTest.php
+    - app/Http/Requests/FotoStoreRequest.php
+    - app/Http/Requests/FotoUpdateRequest.php
+    - app/Http/Requests/KomentarStoreRequest.php
+    - app/Http/Requests/KomentarUpdateRequest.php
+    - app/Http/Requests/LikeStoreRequest.php
+    - app/Http/Requests/LikeUpdateRequest.php
+    - app/Http/Resources/FotoResource.php
+    - app/Http/Resources/KomentarCollection.php
+    - app/Http/Resources/KomentarResource.php
+    - app/Http/Resources/LikeCollection.php
+    - app/Http/Resources/LikeResource.php
+updated:
+    - routes/api.php
+models:
+    User: { username: 'string unique', password: string, email: 'string unique', nama_lengkap: string, alamat: text, relationships: { hasMany: Album } }
+    Album: { nama: string, deskripsi: text, tanggal: date, user_id: 'foreign:users', relationships: { hasMany: Foto } }
+    Foto: { judul: string, deskripsi: text, tanggal: date, file: string, album_id: 'foreign:albums', user_id: 'foreign:users', relationships: { hasMany: 'Komentar, Like' } }
+    Komentar: { foto_id: 'foreign:fotos', user_id: 'foreign:users', isi: text, tanggal: date }
+    Like: { foto_id: 'foreign:fotos', user_id: 'foreign:users', tanggal: date }

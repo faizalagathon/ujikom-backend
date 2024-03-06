@@ -1,0 +1,48 @@
+models:
+  User:
+    username: string unique
+    password: string
+    email: string unique
+    nama_lengkap: string
+    alamat: text
+    relationships:
+      hasMany: Album
+
+  Album:
+    nama: string
+    deskripsi: text
+    tanggal: date
+    user_id: foreign:users
+    relationships:
+      hasMany: Foto
+
+  Foto:
+    judul: string
+    deskripsi: text
+    tanggal: date
+    file: string
+    album_id: foreign:albums
+    user_id: foreign:users
+    relationships:
+      hasMany: Komentar, Like
+
+  Komentar:
+    foto_id: foreign:fotos
+    user_id: foreign:users
+    isi: text
+    tanggal: date
+
+  Like:
+    foto_id: foreign:fotos
+    user_id: foreign:users
+    tanggal: date
+
+controllers:
+  Album:
+    resource: api
+  Foto:
+    resource: api
+  Komentar:
+    resource: api
+  Like:
+    resource: api
