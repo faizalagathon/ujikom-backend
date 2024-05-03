@@ -26,4 +26,22 @@ class AlbumUpdateRequest extends FormRequest
             'user_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'required' => 'Harap Mengisi :attribute',
+            'string' => 'Harap Inputkan Kata',
+            'user_id.exists' => 'User Tidak Ada',
+            'date' => 'Harap Inputkan Tanggal',
+        ];
+    }
+    public function attributes(): array
+    {
+        return [
+            'nama' => 'Nama',
+            'deskripsi' => 'Deskripsi',
+            'tanggal' => 'Tanggal',
+        ];
+    }
 }

@@ -32,7 +32,7 @@ class Foto extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'tanggal' => 'date',
+        'tanggal' => 'datetime:Y-m-d', 
         'album_id' => 'integer',
         'user_id' => 'integer',
     ];

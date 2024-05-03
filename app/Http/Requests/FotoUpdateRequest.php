@@ -23,9 +23,27 @@ class FotoUpdateRequest extends FormRequest
             'judul' => ['required', 'string'],
             'deskripsi' => ['required', 'string'],
             'tanggal' => ['required', 'date'],
-            'file' => ['required', 'string'],
             'album_id' => ['required', 'integer', 'exists:albums,id'],
             'user_id' => ['required', 'integer', 'exists:users,id'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'required' => 'Harap Mengisi :attribute',
+            'string' => 'Harap Inputkan Kata',
+            'user_id.exists' => 'User Tidak Ada',
+            'date' => 'Harap Inputkan Tanggal',
+        ];
+    }
+    public function attributes(): array
+    {
+        return [
+            'judul' => 'Judul',
+            'deskripsi' => 'Deskripsi',
+            'tanggal' => 'Tanggal',
+            'file' => 'File',
         ];
     }
 }

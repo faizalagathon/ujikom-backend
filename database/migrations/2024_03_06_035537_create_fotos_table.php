@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('deskripsi');
             $table->date('tanggal');
             $table->string('file');
-            $table->foreignId('album_id')->constrained();
+            $table->foreignId('album_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

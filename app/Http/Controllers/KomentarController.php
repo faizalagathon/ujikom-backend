@@ -7,41 +7,33 @@ use App\Http\Requests\KomentarUpdateRequest;
 use App\Http\Resources\KomentarCollection;
 use App\Http\Resources\KomentarResource;
 use App\Models\Komentar;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class KomentarController extends Controller
 {
-    public function index(Request $request): Response
+    public function store(KomentarStoreRequest $request)
     {
-        $komentars = Komentar::all();
+        $validatedData = $request->validated();
+        $tanggal = Carbon::now();
+        $validatedData['tanggal'] = $tanggal;
 
-        return new KomentarCollection($komentars);
-    }
-
-    public function store(KomentarStoreRequest $request): Response
-    {
-        $komentar = Komentar::create($request->validated());
+        $komentar = Komentar::create($validatedData);
 
         return new KomentarResource($komentar);
     }
 
-    public function show(Request $request, Komentar $komentar): Response
-    {
-        return new KomentarResource($komentar);
-    }
 
-    public function update(KomentarUpdateRequest $request, Komentar $komentar): Response
+    public function destroy($id)
     {
-        $komentar->update($request->validated());
-
-        return new KomentarResource($komentar);
-    }
-
-    public function destroy(Request $request, Komentar $komentar): Response
-    {
+        $komentar = Komentar::find($id);
+        if (!$komentar) {
+            return response()->json(['status' => false, 'message' => 'Komentar tidak ditemukan'], 404);
+        }
         $komentar->delete();
 
-        return response()->noContent();
+        return response()->json(['status' => true, 'message' => 'Komentar berhasil dihapus']);
     }
+
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\FotoUpdateRequest;
 use App\Http\Resources\FotoCollection;
 use App\Http\Resources\FotoResource;
 use App\Models\Foto;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -16,6 +17,14 @@ class FotoController extends Controller
     public function getFoto($file)
     {
         return Storage::get('public/foto/' . $file);
+    }
+    public function getFotoById($id)
+    {
+        $foto = Foto::find($id);
+        if (!$foto) {
+            return response()->json(['status' => false, 'message' => 'Foto tidak ditemukan'], 404);
+        }
+        return Storage::get('public/foto/' . $foto->file);
     }
     public function index()
     {
@@ -41,29 +50,47 @@ class FotoController extends Controller
 
     public function store(FotoStoreRequest $request)
     {
-        $foto = Foto::create($request->validated());
+        $validatedData = $request->validated();
 
-        Storage::put('public/foto/', $request->foto->name);
+        $tanggal = Carbon::parse($validatedData['tanggal'])->toDateTimeString();
+
+        // Tambahkan tanggal yang sudah diformat ke dalam data yang akan disimpan
+        $validatedData['tanggal'] = $tanggal;
+
+        $file = $request->file('file');
+        $fileName = $file->getClientOriginalName();
+        $file->storeAs('public/foto', $fileName);
+
+        $validatedData['file'] = $fileName;
+
+        $foto = Foto::create($validatedData);
 
         return new FotoResource($foto);
     }
 
-    public function show(Request $request, Foto $foto)
+    public function show($id)
     {
-        return new FotoResource($foto);
+        $foto = Foto::with('komentars', 'likes')->find($id);
+        if (!$foto) {
+            return response()->json(['status' => false, 'message' => 'Foto tidak ditemukan'], 404);
+        }
+        $jumlahLikes = $foto->likes->count();
+        $komentars = $foto->komentars;
+        return response()->json(['status' => true, 'data' => $foto, 'jumlahLike' => $jumlahLikes, 'komentar' => $komentars]);
     }
-
-    public function update(FotoUpdateRequest $request, Foto $foto)
+    public function update(FotoUpdateRequest $request, $idFoto)
     {
+        $foto = Foto::find($idFoto);
         $foto->update($request->validated());
 
         return new FotoResource($foto);
     }
 
-    public function destroy(Request $request, Foto $foto)
+    public function destroy(Request $request, $idFoto)
     {
+        $foto = Foto::find($idFoto);
         $foto->delete();
 
-        return response()->noContent();
+        return response()->json(['status' => true]);
     }
 }

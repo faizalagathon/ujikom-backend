@@ -28,12 +28,19 @@ Route::delete('/album/{idAlbum}', [App\Http\Controllers\AlbumController::class, 
 
 Route::get('/foto ', [App\Http\Controllers\FotoController::class, 'index']);
 Route::get('/getFoto/{file}', [App\Http\Controllers\FotoController::class, 'getFoto']);
+Route::get('/getFotoById/{id}', [App\Http\Controllers\FotoController::class, 'getFotoById']);
 Route::get('/foto/album/{idAlbum}', [App\Http\Controllers\FotoController::class, 'showFotoAlbum']);
 Route::get('/foto/{idFoto}', [App\Http\Controllers\FotoController::class, 'show']);
 Route::post('/foto', [App\Http\Controllers\FotoController::class, 'store']);
-Route::patch('/foto', [App\Http\Controllers\FotoController::class, 'update']);
-Route::delete('/foto', [App\Http\Controllers\FotoController::class, 'destroy']);
+Route::patch('/foto/{idFoto}', [App\Http\Controllers\FotoController::class, 'update']);
+Route::delete('/foto/{idFoto}', [App\Http\Controllers\FotoController::class, 'destroy']);
 
 Route::apiResource('komentar', App\Http\Controllers\KomentarController::class);
 
-Route::apiResource('like', App\Http\Controllers\LikeController::class);
+Route::post('/like', [App\Http\Controllers\LikeController::class, 'toggleLike']);
+Route::get('/like/check/{id_user}/{id_foto}', [App\Http\Controllers\LikeController::class, 'checkLike']);
+
+Route::post('/komentar', [App\Http\Controllers\KomentarController::class, 'store']);
+Route::delete('/komentar/{id}', [App\Http\Controllers\KomentarController::class, 'destroy']);
+
+

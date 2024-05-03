@@ -12,36 +12,35 @@ use Illuminate\Http\Response;
 
 class LikeController extends Controller
 {
-    public function index(Request $request): Response
+    public function toggleLike(Request $request)
     {
-        $likes = Like::all();
+        $like = Like::where('user_id', $request->id_user)
+                    ->where('foto_id', $request->id_foto)
+                    ->first();
 
-        return new LikeCollection($likes);
+        if ($like) {
+            $like->delete();
+            return response()->json(['message' => 'Unlike berhasil'], 200);
+        } else {
+            $like = new Like;
+            $like->user_id = $request->id_user;
+            $like->foto_id = $request->id_foto;
+            $like->tanggal = date('Y-m-d');
+            $like->save();
+            return response()->json(['message' => 'Like berhasil'], 200);
+        }
     }
 
-    public function store(LikeStoreRequest $request): Response
+    public function checkLike($id_user, $id_foto)
     {
-        $like = Like::create($request->validated());
+        $like = Like::where('user_id', $id_user)
+                    ->where('foto_id', $id_foto)
+                    ->first();
 
-        return new LikeResource($like);
-    }
-
-    public function show(Request $request, Like $like): Response
-    {
-        return new LikeResource($like);
-    }
-
-    public function update(LikeUpdateRequest $request, Like $like): Response
-    {
-        $like->update($request->validated());
-
-        return new LikeResource($like);
-    }
-
-    public function destroy(Request $request, Like $like): Response
-    {
-        $like->delete();
-
-        return response()->noContent();
+        if ($like) {
+            return response()->json(['status' => true], 200);
+        } else {
+            return response()->json(['status' => false], 200);
+        }
     }
 }

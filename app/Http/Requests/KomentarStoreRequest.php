@@ -23,7 +23,22 @@ class KomentarStoreRequest extends FormRequest
             'foto_id' => ['required', 'integer', 'exists:fotos,id'],
             'user_id' => ['required', 'integer', 'exists:users,id'],
             'isi' => ['required', 'string'],
-            'tanggal' => ['required', 'date'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'required' => 'Harap Mengisi :attribute',
+            'string' => 'Harap Inputkan Kata',
+            'user_id.exists' => 'User Tidak Ada',
+            'date' => 'Harap Inputkan Tanggal',
+        ];
+    }
+    public function attributes(): array
+    {
+        return [
+            'isi' => 'Komentar',
         ];
     }
 }

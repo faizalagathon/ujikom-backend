@@ -30,22 +30,29 @@ class AlbumController extends Controller
         return new AlbumResource($album);
     }
 
-    public function show(Request $request, Album $album)
-    {
-        return new AlbumResource($album);
-    }
+    // public function show(Request $request, Album $album)
+    // {
+    //     return new AlbumResource($album);
+    // }
 
-    public function update(AlbumUpdateRequest $request, Album $album)
+    public function update(AlbumUpdateRequest $request, $idAlbum)
     {
+        $album = Album::find($idAlbum);
+
         $album->update($request->validated());
 
         return new AlbumResource($album);
     }
 
-    public function destroy(Request $request, Album $album)
+    public function destroy(Request $request, $idAlbum)
     {
-        $album->delete();
+        $album = Album::find($idAlbum);
 
-        return response()->noContent();
+        if ($album) {
+            $album->delete();
+            return response()->json(['status' => true]);
+        }
+
+        return response()->json(['message' => 'Album not found'], 404);
     }
 }
