@@ -13,6 +13,10 @@ class AuthController extends Controller
         $request->validated();
         $user = User::where('username', $request->username)->first();
 
+        if ($user->password !== $request->password) {
+            return response()->json(['status' => false, 'errors' => ['password' => ['Password salah']]], 422);
+        }
+
         return response()->json(['status' => true, 'message' => 'Berhasil Login', 'dataUser' => $user]);
     }
 
